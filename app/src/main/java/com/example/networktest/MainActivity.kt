@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Normal HttpUrlConnection
         val timeStamp = System.currentTimeMillis();
         //As this is network call it should be done in a separate thread
         Thread {
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: $data")
             Log.d(TAG, "timeDiff: ${System.currentTimeMillis() - timeStamp}")
         }.start()
+
+
+        //call retrofit
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://www.vedantu.com/")
