@@ -1,17 +1,15 @@
 package com.example.networktest
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.http.GET
+import java.util.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 private const val TAG = "MainActivity"
@@ -28,5 +26,33 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: $data")
             Log.d(TAG, "timeDiff: ${System.currentTimeMillis() - timeStamp}")
         }.start()
+
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("https://www.vedantu.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val timeStamp2 = System.currentTimeMillis();
+        val service: ApiService = retrofit.create(ApiService::class.java)
+        service.getFlag().enqueue(object : Callback<Map<String, Any>?> {
+            override fun onResponse(
+                call: Call<Map<String, Any>?>?,
+                response: Response<Map<String, Any>?>?
+            ) {
+                Log.d(TAG, "onResponse: $response")
+                Log.d(TAG, "retrofit timeDiff: ${System.currentTimeMillis() - timeStamp2}")
+
+            }
+
+            override fun onFailure(call: Call<Map<String, Any>?>?, t: Throwable?) {
+
+            }
+        })
+    }
+
+
+    interface ApiService {
+        @GET("mobile/toggle.json")
+        fun getFlag(): Call<Map<String, Any>?>
     }
 }
