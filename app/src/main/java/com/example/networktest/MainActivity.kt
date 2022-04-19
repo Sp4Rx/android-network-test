@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 call: Call<Map<String, Any>?>?,
                 response: Response<Map<String, Any>?>?
             ) {
-                Log.d(TAG, "onResponse: $response")
+                Log.d(TAG, "onResponse: ${response?.body()}")
                 Log.d(TAG, "retrofit timeDiff: ${System.currentTimeMillis() - timeStamp2}")
 
             }
